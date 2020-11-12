@@ -1,0 +1,92 @@
+package com.datagear.goaml.license.service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.datagear.goaml.license.exception.BankNotFoundException;
+import com.datagear.goaml.license.exception.UserNotFoundException;
+import com.datagear.goaml.license.model.Bank;
+import com.datagear.goaml.license.model.License;
+import com.datagear.goaml.license.model.User;
+import com.datagear.goaml.license.repository.BankRepository;
+
+@Service
+public class BankService {
+	
+	@Autowired
+	private BankRepository bankRepository;
+	
+	public long count() {
+		return bankRepository.count();
+	}
+	
+	public boolean existsById(Long id) {
+		return bankRepository.existsById(id);
+	}
+	
+	public Bank findById(Long id) {
+		
+		 return bankRepository.findById(id)
+			      .orElseThrow(() -> new BankNotFoundException(id));
+	}
+
+	
+	public List<Bank> findAll() {
+		List<Bank> banks = new ArrayList<>();
+		bankRepository.findAll().forEach(banks::add);
+		return banks;
+	}
+
+	
+	public Bank save(Bank bank) {
+		return bankRepository.save(bank);
+	}
+	
+	
+	  public Bank updateBank(Bank updatedBank, Long id) {
+
+	    return bankRepository.findById(id)
+	      .map(bank -> {	    	  
+	       bank.setCountry(updatedBank.getCountry());
+	       bank.setName(updatedBank.getName());
+	       bank.setLicense(updatedBank.getLicense());
+	       bank.setUser(updatedBank.getUser());
+	        return bankRepository.save(bank);
+	      })
+	      .orElseGet(() -> {
+	        updatedBank.setId(id);
+	        return bankRepository.save(updatedBank);
+	      });
+	  }
+
+	
+	public void deleteById(Long id) {
+		bankRepository.deleteById(id);
+		
+	}
+
+	
+	public void delete(Bank bank) {
+		bankRepository.delete(bank);
+		
+	}
+
+	
+	public void deleteAll() {
+		bankRepository.deleteAll();
+		
+	}
+
+}
