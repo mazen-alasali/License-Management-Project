@@ -12,28 +12,50 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.sun.istack.NotNull;
+
 @Entity
 @Table(name="user")
 public class User {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@NotNull
 	private long id;
-	@Column(name="user_name")
+	@Column(name="user_name", unique=true)
+	@NotNull
 	private String userName;
 	@Column(name="password")
+	@NotNull
 	private String password;
 	@Column(name="creation_date")
+	@NotNull
 	private Date creationDate;
 	@Column(name="birth_date")
 	private Date birthDate;
 	
-	@OneToMany(mappedBy="user", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy="user", cascade = CascadeType.ALL)
+	@JsonManagedReference
     private List<License> licenses;
 	
-	@OneToMany(mappedBy="user", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy="user", cascade = CascadeType.ALL)
+	@JsonIgnore
     private List<Bank> banks;
 	
+	public List<License> getLicenses() {
+		return licenses;
+	}
+	public void setLicenses(List<License> licenses) {
+		this.licenses = licenses;
+	}
+	public List<Bank> getBanks() {
+		return banks;
+	}
+	public void setBanks(List<Bank> banks) {
+		this.banks = banks;
+	}
 	public User() {
 		super();
 	}

@@ -48,6 +48,10 @@ public class BankService {
 		bankRepository.findAll().forEach(banks::add);
 		return banks;
 	}
+	
+	public Bank findByName(String bankName){
+		return bankRepository.findByName(bankName);
+	}
 
 	
 	public Bank save(Bank bank) {

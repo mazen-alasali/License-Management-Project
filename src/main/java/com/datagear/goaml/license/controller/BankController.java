@@ -38,6 +38,11 @@ public class BankController {
 		
 	}
 	
+	@GetMapping("/banks/bankByName/{bankName}")
+	public Bank getlBankByName(@PathVariable String bankName){
+		return  bankService.findByName(bankName);
+	}
+	
 	@PostMapping("/banks")
 	public Bank addBank(@RequestBody Bank bank) {
 		return bankService.save(bank);

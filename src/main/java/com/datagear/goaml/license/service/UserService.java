@@ -35,12 +35,17 @@ public class UserService  {
 	
 	@Autowired
 	private UserRepository userRepository;
-
-//	 public User findUserById( Long id) {
-//		User user= userRepository.getOne(id);
-//		return user;
-//	 }
 	
+	public long count() {
+		
+		return userRepository.count();
+	}
+	
+	public boolean existsById(Long id) {
+		
+		return userRepository.existsById(id);
+	}
+
 	public User findById(Long id) {
 		return userRepository.findById(id)
 			      .orElseThrow(() -> new UserNotFoundException(id));
@@ -61,6 +66,10 @@ public class UserService  {
 	public List<User> findTopTenEarlyUserRegistered() {
 		List<User> users=userRepository.findTopTenEarlyUserRegistered();
 		return users;
+	}
+	
+	public User findByUserName(String userName) {
+		return userRepository.findByUserName(userName);
 	}
 	
 	public User save(User user) {
@@ -92,51 +101,4 @@ public class UserService  {
 		userRepository.delete(user);
 		
 	}
-
-public boolean existsById(Long id) {
-		
-		return userRepository.existsById(id);
-	}
-
-
-	
-	public long count() {
-		
-		return userRepository.count();
-	}
-
-	public void deleteAll() {
-		userRepository.deleteAll();
-		
-	}
-
-
-
-	
-
-
-	
-//	 public List<User> findTopRecentUsers(){
-//		EntityManager entityManager;
-//		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-//		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-//		Root<User> book = criteriaQuery.from(User.class);
-//		List<Predicate> predicates = new ArrayList<>();
-//		    
-//		    if (authorName != null) {
-//		        predicates.add(criteriaBuilder.equal(book.get("author"), authorName));
-//		    
-//		        criteriaQuery.where(predicates.toArray(new Predicate[0]));
-//		 
-//		    return entityManager.createQuery(criteriaQuery).getResultList();
-//		}
-//		 
-//	 }
-
-	
-		
-	
-	
-	
-
 }
