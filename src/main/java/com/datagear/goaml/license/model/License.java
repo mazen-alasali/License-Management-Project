@@ -1,6 +1,7 @@
 package com.datagear.goaml.license.model;
 
-import java.util.Date;
+import java.util.Calendar;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,12 +14,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.springframework.format.annotation.DateTimeFormat;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.NotNull;
+
 
 @Entity
 @Table(name="license")
@@ -36,11 +36,9 @@ public class License {
 	private double price;
 	@Column(name="creation_date")
 	@NotNull
-	@Temporal(TemporalType.TIMESTAMP)
 	private Date creationDate;
 	@Column(name="expiration_date")
 //	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@Temporal(TemporalType.TIMESTAMP)
 	@NotNull
 	private Date expirationDate;
 	
@@ -60,15 +58,14 @@ public class License {
 	}
 	
 
-//	public License(String applicationName, double price, Date expirationDate, User user, Bank bank) {
-//		super();
-//		this.applicationName = applicationName;
-//		this.price = price;
-//		this.expirationDate = expirationDate;
-//		this.creationDate= creationDate;
-//		this.user = user;
-//		this.bank = bank;
-//	}
+	public License(String applicationName, double price, Date expirationDate, User user) {
+		super();
+		this.applicationName = applicationName;
+		this.price = price;
+		this.expirationDate = expirationDate;
+		this.creationDate= this.getCreationDate();
+		this.user = user;
+	}
 
 	public License(long id, String applicationName, double price, Date creationDate, Date expirationDate, User user,
 			Bank bank) {
@@ -76,7 +73,7 @@ public class License {
 		this.id = id;
 		this.applicationName = applicationName;
 		this.price = price;
-		this.creationDate = creationDate;
+		this.creationDate = this.getCreationDate();
 		this.expirationDate = expirationDate;
 		this.user = user;
 		this.bank = bank;
@@ -98,7 +95,15 @@ public class License {
 		this.applicationName = name;
 	}
 	public Date getCreationDate() {
-		return creationDate;
+			// create a java calendar instance
+			Calendar calendar = Calendar.getInstance();
+			// get a java date (java.util.Date) from the Calendar instance.
+			// this java date will represent the current date, or "now".
+			java.util.Date currentDate = calendar.getTime();
+			// now, create a java.sql.Date from the java.util.Date
+			Date creationDate = new java.sql.Date(currentDate.getTime());
+	
+	return creationDate;
 	}
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;

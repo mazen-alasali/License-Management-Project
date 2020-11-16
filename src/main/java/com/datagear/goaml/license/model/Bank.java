@@ -13,14 +13,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
-import org.springframework.lang.NonNull;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.sun.istack.NotNull;
+
 
 @Entity
 @Table(name="bank")
@@ -39,7 +35,7 @@ public class Bank {
 	private String country;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="user_id", nullable=false, referencedColumnName = "id")
+    @JoinColumn(name="user_id", referencedColumnName = "id")
 	@JsonIgnore
     private User user;
 	
@@ -50,10 +46,21 @@ public class Bank {
 	public Bank() {
 		super();
 	}
-	public Bank(String name, String country) {
+	
+	public Bank(@NotNull String name, @NotNull String country, User user) {
 		super();
 		this.name = name;
-		this.country= country;
+		this.country = country;
+		this.user = user;
+	}
+	
+	public Bank(@NotNull long id, @NotNull String name, @NotNull String country, User user, List<License> licenses) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.country = country;
+		this.user = user;
+		this.licenses = licenses;
 	}
 	public long getId() {
 		return id;
