@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.datagear.goaml.license.model.User;
 import com.datagear.goaml.license.repository.UserRepository;
 
-import com.datagear.goaml.license.exception.UserNotFoundException;
+import com.datagear.goaml.license.exception.HandledException;
 
 @Service
 public class UserService  {
@@ -46,9 +46,9 @@ public class UserService  {
 		return userRepository.existsById(id);
 	}
 
-	public User findById(Long id) {
+	public User findById(Long id)  {
 		return userRepository.findById(id)
-			      .orElseThrow(() -> new UserNotFoundException(id));
+				 .orElseThrow(() -> new HandledException("Method:findById, Result: user not found"));
 	}
 	
 	public List<User> findAll() {
@@ -60,22 +60,27 @@ public class UserService  {
 	
 	public List<User> findTopTenUserCreated() {
 		List<User> users= userRepository.findTop3ByOrderByCreationDateAsc();
-//		List<User> users= userRepository.findTopTenUserCreated();
 		return users;
 	}
 	
 	public List<User> findTopTenEarlyUserRegistered() {
 		List<User> users= userRepository.findTop3ByOrderByCreationDateDesc();
-//		List<User> users=userRepository.findTopTenEarlyUserRegistered();
 		return users;
 	}
 	
-	public User findByUserName(String userName) {
-		return userRepository.findByUserName(userName);
+	public User findByUserName(String userName) throws HandledException  {
+		try {
+			return userRepository.findByUserName(userName);
+		}
+		catch (HandledException exception) {
+		exception.printMessage("Method:findByUserName, Result: user not found");
+		return null;	
+		}
+				
 	}
 	
 
-	public User checkUserLogin(String userName, String password) {
+	public User checkUserLogin(String userName, String password)  {
 		return userRepository.findByUserNameAndPassword(userName, password);
 }
 	public User resetPassword(String userName, String password, String newPassword) {

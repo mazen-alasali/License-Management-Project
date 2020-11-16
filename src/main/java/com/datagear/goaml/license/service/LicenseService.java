@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.datagear.goaml.license.exception.LicenseNotFoundException;
+import com.datagear.goaml.license.exception.HandledException;
 import com.datagear.goaml.license.model.Bank;
 import com.datagear.goaml.license.model.License;
 import com.datagear.goaml.license.model.User;
@@ -39,7 +39,7 @@ public class LicenseService {
 	
 	public License findById(Long id) {
 		 return licenseRepository.findById(id)
-			      .orElseThrow(() -> new LicenseNotFoundException(id));
+			      .orElseThrow(() -> new HandledException("Method:findById, Result: license not found"));
 	}
 	
 	

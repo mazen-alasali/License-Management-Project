@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.datagear.goaml.license.exception.BankNotFoundException;
-import com.datagear.goaml.license.exception.UserNotFoundException;
+import com.datagear.goaml.license.exception.HandledException;
 import com.datagear.goaml.license.model.Bank;
 import com.datagear.goaml.license.model.License;
 import com.datagear.goaml.license.model.User;
@@ -39,7 +38,7 @@ public class BankService {
 	public Bank findById(Long id) {
 		
 		 return bankRepository.findById(id)
-			      .orElseThrow(() -> new BankNotFoundException(id));
+			      .orElseThrow(() -> new HandledException("Method:findById, Result: bank not found"));
 	}
 
 	
