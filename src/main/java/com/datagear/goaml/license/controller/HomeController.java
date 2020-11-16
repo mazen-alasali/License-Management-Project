@@ -17,8 +17,22 @@ public class HomeController {
 	private UserService userService;
 	
 	
-//	@GetMapping("home/signin/{userName}/{password}")
-//	public User signIn(@PathVariable String userName, @PathVariable String password) {
-//		return userService.checkUserLogin(userName, password);
-//	}
+	@GetMapping("home/signin/{userName}/{password}")
+	public User signIn(@PathVariable String userName, @PathVariable String password) {
+		System.out.println("Username:"+ userName);
+		return userService.checkUserLogin(userName, password);
+	}
+	
+	@GetMapping("home/forgetPassword/{userName}")
+	public User forgetPassword(@PathVariable String userName) {
+		return userService.findByUserName(userName);
+	}
+	
+	@GetMapping("home/resetPassword/{userName}/{password}/{newPassword}")
+	public User resetPassword(@PathVariable String userName,
+			@PathVariable String password, @PathVariable String newPassword) {
+		return userService.resetPassword(userName, password, newPassword);
+	}
+	
+
 }

@@ -74,40 +74,16 @@ public class UserService  {
 		return userRepository.findByUserName(userName);
 	}
 	
-//	public User findByPassword(String password) {
-//		return userRepository.findByPassword(password);
-//	}
-	
-//	public User checkUserLogin(String userName, String password) {
-//	User user = userRepository.findByUserName(userName);
-//	String checkName = user.getUserName();
-//    String checkPassword = user.getPassword();
-//
-//    if (checkName.equals(userName) &&  checkPassword.equals(password)) {
-//        System.out.print("Hello" + userName);
-//        return user;
-//    } else {
-//        System.out.print("access denied");
-//        return null;
-//    }
-//}
-//
-//	public String forgetPassword(String userName) {
-//		return  userRepository.findByUserName(userName).getPassword();	
-//	}
-//
-//	public User resetPassword(User userWantReset, String Password)
-//	{
-//		User user=userRepository.findById(userWantReset.getId());
-//		 return userRepository.findById(userWantReset.getId())
-//			      .map(user -> {	    	  
-//			    	userWantReset.setPassword(userWantReset.getPassword()});
-//			    	
-//			        return userRepository.save(user);
-//			      });
-//		
-//	}
 
+	public User checkUserLogin(String userName, String password) {
+		return userRepository.findByUserNameAndPassword(userName, password);
+}
+	public User resetPassword(String userName, String password, String newPassword) {
+		User user = userRepository.findByUserNameAndPassword(userName, password);
+		user.setPassword(newPassword);
+		user = userRepository.save(user);
+		return user;
+	}
 	
 	public User save(User user) {
 		return userRepository.save(user);
@@ -138,4 +114,5 @@ public class UserService  {
 		userRepository.delete(user);
 		
 	}
+
 }
