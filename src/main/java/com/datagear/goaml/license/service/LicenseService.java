@@ -50,12 +50,12 @@ public class LicenseService {
 	}
 	
 	public List<License> findTopTenLicencesExpired() {
-		List<License> licenses= licenseRepository.findTopTenLicencesExpired();
+		List<License> licenses= licenseRepository.findTop3ByOrderByExpirationDateAsc();
 		return licenses;
 	}
 	
 	public List<License> findTopTenlicensesCreated(){
-		List<License> licenses= licenseRepository.findTopTenlicensesCreated();
+		List<License> licenses= licenseRepository.findTop3ByOrderByCreationDateAsc();
 		return licenses;
 	}
 	

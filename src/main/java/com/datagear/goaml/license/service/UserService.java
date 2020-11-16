@@ -59,12 +59,14 @@ public class UserService  {
 	
 	
 	public List<User> findTopTenUserCreated() {
-		List<User> users= userRepository.findTopTenUserCreated();
+		List<User> users= userRepository.findTop3ByOrderByCreationDateAsc();
+//		List<User> users= userRepository.findTopTenUserCreated();
 		return users;
 	}
 	
 	public List<User> findTopTenEarlyUserRegistered() {
-		List<User> users=userRepository.findTopTenEarlyUserRegistered();
+		List<User> users= userRepository.findTop3ByOrderByCreationDateDesc();
+//		List<User> users=userRepository.findTopTenEarlyUserRegistered();
 		return users;
 	}
 	
@@ -72,13 +74,48 @@ public class UserService  {
 		return userRepository.findByUserName(userName);
 	}
 	
+//	public User findByPassword(String password) {
+//		return userRepository.findByPassword(password);
+//	}
+	
+//	public User checkUserLogin(String userName, String password) {
+//	User user = userRepository.findByUserName(userName);
+//	String checkName = user.getUserName();
+//    String checkPassword = user.getPassword();
+//
+//    if (checkName.equals(userName) &&  checkPassword.equals(password)) {
+//        System.out.print("Hello" + userName);
+//        return user;
+//    } else {
+//        System.out.print("access denied");
+//        return null;
+//    }
+//}
+//
+//	public String forgetPassword(String userName) {
+//		return  userRepository.findByUserName(userName).getPassword();	
+//	}
+//
+//	public User resetPassword(User userWantReset, String Password)
+//	{
+//		User user=userRepository.findById(userWantReset.getId());
+//		 return userRepository.findById(userWantReset.getId())
+//			      .map(user -> {	    	  
+//			    	userWantReset.setPassword(userWantReset.getPassword()});
+//			    	
+//			        return userRepository.save(user);
+//			      });
+//		
+//	}
+
+	
 	public User save(User user) {
 		return userRepository.save(user);
 	}
 	
 	@PutMapping("/users/{id}")
 	  public User updateUser(@RequestBody User updatedUser, @PathVariable Long id) {
-
+		
 	    return userRepository.findById(id)
 	      .map(user -> {	    	  
 	       user.setPassword(updatedUser.getPassword());

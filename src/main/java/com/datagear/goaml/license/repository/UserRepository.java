@@ -19,15 +19,30 @@ import com.datagear.goaml.license.model.User;
 
 public interface UserRepository extends JpaRepository<User, Long>{
   	
-	@Query(value="SELECT * FROM licenseDB.user ORDER BY creation_date ASC LIMIT 3;",
-	nativeQuery= true)
-	public List<User> findTopTenUserCreated();
+//	@Query(value="SELECT * FROM licenseDB.user ORDER BY creation_date ASC LIMIT 3;",
+//	nativeQuery= true)
+//	public List<User> findTopTenUserCreated();
+	public List<User> findTop3ByOrderByCreationDateAsc();
 	
-	@Query(value="SELECT * FROM licenseDB.user ORDER BY creation_date desc LIMIT 3;",
-			nativeQuery= true)
-	public List<User> findTopTenEarlyUserRegistered(); 
+//	@Query(value="SELECT * FROM licenseDB.user ORDER BY creation_date desc LIMIT 3;",
+//			nativeQuery= true)
+//	public List<User> findTopTenEarlyUserRegistered(); 
+//	findTopTenEarlyUserRegistered(); 
+	public List<User> findTop3ByOrderByCreationDateDesc();
+	
+//	findFirstByOrderByLastnameAsc();
+
+	
+	
 	
 	public User findByUserName(String userName);
 	
+//	public User findByPassword(String password);
+//	
+//	public User loginUser(String userName);
+	
+//	public String forgetPassword(String userName);
+//	
+//	public User resetPassword(User user, String Password);
 
 }
