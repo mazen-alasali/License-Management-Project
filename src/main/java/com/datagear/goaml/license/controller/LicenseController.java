@@ -62,10 +62,10 @@ public class LicenseController {
 		return  licenseService.findByCreatedUser(createdUser);
 	}
 	
-	@PostMapping("/licenses")
-	public License addLicense(@RequestBody License license) {
+	@PostMapping("/licenses/{userId}/{bankName}")
+	public License addLicense(@RequestBody License license, @PathVariable Long userId,@PathVariable String bankName ) {
 		log.info(license.toString());
-		return licenseService.save(license);
+		return licenseService.save(license, userId, bankName);
 	}
 	
 	@PutMapping("licenses/{id}")

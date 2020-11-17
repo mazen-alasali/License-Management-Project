@@ -27,6 +27,9 @@ public class BankService {
 	@Autowired
 	private BankRepository bankRepository;
 	
+	@Autowired
+	private UserService userService;
+	
 	public long count() {
 		return bankRepository.count();
 	}
@@ -53,7 +56,9 @@ public class BankService {
 	}
 
 	
-	public Bank save(Bank bank) {
+	public Bank save(Bank bank, Long userId) {
+		User user=userService.findById(userId);
+		bank.setUser(user);
 		return bankRepository.save(bank);
 	}
 	

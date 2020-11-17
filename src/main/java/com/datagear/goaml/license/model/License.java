@@ -28,7 +28,7 @@ public class License {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
-	@Column(name="application_name", unique=true)
+	@Column(name="application_name")
 	@NotNull
 	private String applicationName;
 	@Column(name="price")
