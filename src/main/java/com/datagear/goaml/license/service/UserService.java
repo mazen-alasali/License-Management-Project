@@ -28,22 +28,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.datagear.goaml.license.model.User;
 import com.datagear.goaml.license.repository.UserRepository;
 
-import com.datagear.goaml.license.exception.UserNotFoundException;
+import com.datagear.goaml.license.exception.HandledException;
 
 @Service
 public class UserService  {
 	
 	@Autowired
 	private UserRepository userRepository;
-
-//	 public User findUserById( Long id) {
-//		User user= userRepository.getOne(id);
-//		return user;
-//	 }
 	
-	public User findById(Long id) {
+	public long count() {
+		
+		return userRepository.count();
+	}
+	
+	public boolean existsById(Long id) {
+		
+		return userRepository.existsById(id);
+	}
+
+	public User findById(Long id)  {
 		return userRepository.findById(id)
-			      .orElseThrow(() -> new UserNotFoundException(id));
+				 .orElseThrow(() -> new HandledException("Method:findById, Result: user not found"));
 	}
 	
 	public List<User> findAll() {
@@ -54,13 +59,35 @@ public class UserService  {
 	
 	
 	public List<User> findTopTenUserCreated() {
-		List<User> users= userRepository.findTopTenUserCreated();
+		List<User> users= userRepository.findTop3ByOrderByCreationDateAsc();
 		return users;
 	}
 	
 	public List<User> findTopTenEarlyUserRegistered() {
-		List<User> users=userRepository.findTopTenEarlyUserRegistered();
+		List<User> users= userRepository.findTop3ByOrderByCreationDateDesc();
 		return users;
+	}
+	
+	public User findByUserName(String userName) throws HandledException  {
+		try {
+			return userRepository.findByUserName(userName);
+		}
+		catch (HandledException exception) {
+		exception.printMessage("Method:findByUserName, Result: user not found");
+		return null;	
+		}
+				
+	}
+	
+
+	public User checkUserLogin(String userName, String password)  {
+		return userRepository.findByUserNameAndPassword(userName, password);
+}
+	public User resetPassword(String userName, String password, String newPassword) {
+		User user = userRepository.findByUserNameAndPassword(userName, password);
+		user.setPassword(newPassword);
+		user = userRepository.save(user);
+		return user;
 	}
 	
 	public User save(User user) {
@@ -69,7 +96,7 @@ public class UserService  {
 	
 	@PutMapping("/users/{id}")
 	  public User updateUser(@RequestBody User updatedUser, @PathVariable Long id) {
-
+		
 	    return userRepository.findById(id)
 	      .map(user -> {	    	  
 	       user.setPassword(updatedUser.getPassword());
@@ -92,51 +119,5 @@ public class UserService  {
 		userRepository.delete(user);
 		
 	}
-
-public boolean existsById(Long id) {
-		
-		return userRepository.existsById(id);
-	}
-
-
-	
-	public long count() {
-		
-		return userRepository.count();
-	}
-
-	public void deleteAll() {
-		userRepository.deleteAll();
-		
-	}
-
-
-
-	
-
-
-	
-//	 public List<User> findTopRecentUsers(){
-//		EntityManager entityManager;
-//		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-//		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-//		Root<User> book = criteriaQuery.from(User.class);
-//		List<Predicate> predicates = new ArrayList<>();
-//		    
-//		    if (authorName != null) {
-//		        predicates.add(criteriaBuilder.equal(book.get("author"), authorName));
-//		    
-//		        criteriaQuery.where(predicates.toArray(new Predicate[0]));
-//		 
-//		    return entityManager.createQuery(criteriaQuery).getResultList();
-//		}
-//		 
-//	 }
-
-	
-		
-	
-	
-	
 
 }

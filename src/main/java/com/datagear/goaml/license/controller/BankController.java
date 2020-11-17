@@ -38,9 +38,14 @@ public class BankController {
 		
 	}
 	
-	@PostMapping("/banks")
-	public Bank addBank(@RequestBody Bank bank) {
-		return bankService.save(bank);
+	@GetMapping("/banks/bankByName/{bankName}")
+	public Bank getlBankByName(@PathVariable String bankName){
+		return  bankService.findByName(bankName);
+	}
+	
+	@PostMapping("/banks/{userId}")
+	public Bank addBank(@RequestBody Bank bank, @PathVariable Long userId) {
+		return bankService.save(bank, userId);
 	}
 	
 	@PutMapping("banks/{id}")

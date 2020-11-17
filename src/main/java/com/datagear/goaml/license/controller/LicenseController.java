@@ -2,6 +2,8 @@ package com.datagear.goaml.license.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,9 @@ import com.datagear.goaml.license.service.LicenseService;
 @RestController
 public class LicenseController {
 	
+	private static final Logger log = LoggerFactory.getLogger(LicenseController.class);
+
+	
 	@Autowired
 	private LicenseService licenseService;
 	
@@ -32,24 +37,40 @@ public class LicenseController {
 		return licenseService.findAll();
 	}
 	
-//	@GetMapping("/top10Licensescreated")
-//	public List<License> getTopTenLicensesCreated(){
-//		return  licenseService.findTopTenlicensesCreated();
-//	}
+	@GetMapping("/licenses/top10LicensesCreated")
+	public List<License> getTopTenLicensesCreated(){
+		return  licenseService.findTopTenlicensesCreated();
+	}
 	
-//	@GetMapping("/top10LicensesExpired")
-//	public List<License> getTopTenLicensesExpired(){
-//		return  licenseService.findTopTenLicencesExpired();
-//	}
+	@GetMapping("/licenses/top10LicensesExpired")
+	public List<License> getTopTenLicensesExpired(){
+		return  licenseService.findTopTenLicencesExpired();
+	}
 	
-	@PostMapping("/licenses")
-	public License addLicense(@RequestBody License license) {
-		return licenseService.save(license);
+	@GetMapping("/licenses/licenseByApplicationName/{applicationName}")
+	public List<License> getlicenseByApplicationName(@PathVariable String applicationName){
+		return  licenseService.findByApplicationName(applicationName);
+	}
+	
+	@GetMapping("/licenses/licenseByBanknName/{bankName}")
+	public List<License> getlicenseByBankName(@PathVariable String bankName){
+		return  licenseService.findByBankName(bankName);
+	}
+	
+	@GetMapping("/licenses/licenseByCreatedUser/{createdUser}")
+	public List<License> getlicenseByCreatedUser(@PathVariable String createdUser){
+		return  licenseService.findByCreatedUser(createdUser);
+	}
+	
+	@PostMapping("/licenses/{userId}/{bankName}")
+	public License addLicense(@RequestBody License license, @PathVariable Long userId,@PathVariable String bankName ) {
+		log.info(license.toString());
+		return licenseService.save(license, userId, bankName);
 	}
 	
 	@PutMapping("licenses/{id}")
 	public License updateLicense(@RequestBody License license, @PathVariable Long id) {
-		return licenseService.updateLicense(license, id);
+		return licenseService.update(license, id);
 	}
 	
 	
