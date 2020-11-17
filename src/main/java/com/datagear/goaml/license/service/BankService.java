@@ -63,23 +63,15 @@ public class BankService {
 	}
 	
 	
-	  public Bank updateBank(Bank updatedBank, Long id) {
-
-	    return bankRepository.findById(id)
-	      .map(bank -> {	    	  
-	       bank.setCountry(updatedBank.getCountry());
-	       bank.setName(updatedBank.getName());
-	       bank.setLicense(updatedBank.getLicense());
-	       bank.setUser(updatedBank.getUser());
-	        return bankRepository.save(bank);
-	      })
-	      .orElseGet(() -> {
-	        updatedBank.setId(id);
-	        return bankRepository.save(updatedBank);
-	      });
+	  public Bank updateBank(Bank updatedBank, Long id) throws HandledException{
+		  Bank bank = bankRepository.findById(id)
+				  	.orElseThrow(() -> new HandledException("Bank with ID :"+id+" Not Found!"));  
+		  bank.setName(updatedBank.getName());
+		  bank.setCountry(updatedBank.getCountry());
+		  return bankRepository.save(bank);
+		  
 	  }
-
-	
+	  
 	public void deleteById(Long id) {
 		bankRepository.deleteById(id);
 		

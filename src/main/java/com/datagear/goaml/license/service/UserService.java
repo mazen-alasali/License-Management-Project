@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.datagear.goaml.license.model.Bank;
 import com.datagear.goaml.license.model.User;
 import com.datagear.goaml.license.repository.UserRepository;
 
@@ -95,19 +96,13 @@ public class UserService  {
 	}
 	
 	@PutMapping("/users/{id}")
-	  public User updateUser(@RequestBody User updatedUser, @PathVariable Long id) {
-		
-	    return userRepository.findById(id)
-	      .map(user -> {	    	  
-	       user.setPassword(updatedUser.getPassword());
-	        user.setUserName(updatedUser.getUserName());
-	        user.setBirthDate(updatedUser.getBirthDate());
-	        return userRepository.save(user);
-	      })
-	      .orElseGet(() -> {
-	        updatedUser.setId(id);
-	        return userRepository.save(updatedUser);
-	      });
+	  public User updateUser(@RequestBody User updatedUser, @PathVariable Long id) throws HandledException {
+		        User user = userRepository.findById(id)
+		        .orElseThrow(() -> new HandledException("User with ID :"+id+" Not Found!"));  
+		        user.setPassword(updatedUser.getPassword());
+				user.setUserName(updatedUser.getUserName());
+				user.setBirthDate(updatedUser.getBirthDate());
+				return userRepository.save(user);
 	  }
 	
 	public void deleteById(Long id) {
