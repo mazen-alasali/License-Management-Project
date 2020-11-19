@@ -68,8 +68,7 @@ public class BankService {
 				  	.orElseThrow(() -> new HandledException("Bank with ID :"+id+" Not Found!"));  
 		  bank.setName(updatedBank.getName());
 		  bank.setCountry(updatedBank.getCountry());
-		  return bankRepository.save(bank);
-		  
+		  return bankRepository.save(bank);  
 	  }
 	  
 	public void deleteById(Long id) {
