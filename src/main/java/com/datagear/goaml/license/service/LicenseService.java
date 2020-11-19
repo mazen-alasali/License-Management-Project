@@ -89,20 +89,11 @@ public List<License> findByCreatedUser(String createdUser) {
 	
 	
 	  public License update(License updatedLicense, Long id) {
-
-	    return licenseRepository.findById(id)
-	      .map(license -> {	    	  
-	       license.setApplicationName(updatedLicense.getApplicationName());
-	       license.setPrice(updatedLicense.getPrice());
-	       license.setExpirationDate(updatedLicense.getExpirationDate());
-	       license.setBank(updatedLicense.getBank());
-	       license.setUser(updatedLicense.getUser());
-	        return licenseRepository.save(license);
-	      })
-	      .orElseGet(() -> {
-	        updatedLicense.setId(id);
-	        return licenseRepository.save(updatedLicense);
-	      });
+		  License license = licenseRepository.findById(id)
+				  	.orElseThrow(() -> new HandledException("License with ID :"+id+" Not Found!"));  
+		  license.setApplicationName(updatedLicense.getApplicationName());
+		  license.setExpirationDate(updatedLicense.getExpirationDate());
+		  return licenseRepository.save(license);
 	  }
 
 	public void deleteById(Long id) {
