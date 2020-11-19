@@ -79,7 +79,11 @@ public List<License> findByCreatedUser(String createdUser) {
 		
 	}
 
-	public License save(License license) {
+	public License save(License license, Long userId, String bankName) {
+		User user = userService.findById(userId);
+		Bank bank = bankService.findByName(bankName);
+		license.setUser(user);
+		license.setBank(bank);
 		return licenseRepository.save(license);
 	}
 	

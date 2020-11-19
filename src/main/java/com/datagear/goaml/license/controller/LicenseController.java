@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,9 +20,11 @@ import com.datagear.goaml.license.service.LicenseService;
 
 
 @RestController
+@CrossOrigin(origins = "*")
+
 public class LicenseController {
 	
-	private static final Logger log = LoggerFactory.getLogger(LicenseController.class);
+private static final Logger log = LoggerFactory.getLogger(LicenseController.class);
 
 	
 	@Autowired
@@ -62,10 +65,10 @@ public class LicenseController {
 		return  licenseService.findByCreatedUser(createdUser);
 	}
 	
-	@PostMapping("/licenses")
-	public License addLicense(@RequestBody License license) {
+	@PostMapping("/licenses/{userId}/{bankName}")
+	public License addLicense(@RequestBody License license, @PathVariable Long userId,@PathVariable String bankName ) {
 		log.info(license.toString());
-		return licenseService.save(license);
+		return licenseService.save(license, userId, bankName);
 	}
 	
 	@PutMapping("licenses/{id}")
@@ -79,8 +82,4 @@ public class LicenseController {
 		//ResponseEntity
 		licenseService.deleteById(id);
 	}
-	
-	
-	
-	
 }
