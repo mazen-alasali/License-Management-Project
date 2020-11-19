@@ -27,11 +27,22 @@ public interface LicenseRepository extends JpaRepository<License, Long>{
 	public List<License> findByExpirationDateAfter(Date currentDate);
 
 //	@Query("SELECT * FROM licenseDB.license l \n" + 
-//			"Inner JOIN licenseDB.user u ON l.user_id= :userId\n" + 
-//			"Inner JOIN licenseDB.bank b ON l.bank_id= :bankId\n" + 
+//			"Inner JOIN licenseDB.user u ON l.user_id= :userId \n" + 
+//			"Inner JOIN licenseDB.bank b ON l.bank_id= :bankId \n" + 
 //			"and l.application_name= :applicationName")
-//	public List<License> findByApplicationNameAndUserIdAndBankId(
-//			@Param("applicationName") String applicationName,
-//			@Param("userId")  Long userId,
-//			@Param("bankId")  Long bankId);
+//	
+//	@Query("SELECT * FROM licenseDB.license l \n" + 
+//			"Inner JOIN licenseDB.user u ON l.user_id=u.id \n" + 
+//			"Inner JOIN licenseDB.bank b ON l.bank_id=b.id\n" + 
+//			"and l.application_name= applicationName;")
+//	@Query("SELECT * FROM licenceDb.license e\n" + 
+//			"      JOIN licenceDb.license.user u\n" + 
+//			"      JOIN licenceDb.license.bank b\n" + 
+//			"      WHERE licenceDb.license.application_name = :applicationName)"
+//	public List<License> findByApplicationNameAndUserIDAndBankI(
+//			@Param String applicationName,@Param String  bankName,@ String userName){
+////	
+	
+	public List<License> findByApplicationNameAndUserIdAndBankId(String applicationName, Long userId, Long BankId);
+			
 }

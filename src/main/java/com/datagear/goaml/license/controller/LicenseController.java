@@ -62,12 +62,12 @@ public class LicenseController {
 		return  licenseService.findByCreatedUser(createdUser);
 	}
 	
-//	@GetMapping("/licenses/licenseByApplicationNameAndUserAndBank/{applicationName}/{userName}/(bankName}")
-//	public List<License> getlicenseByApplicationNameAndUserAndBank(@PathVariable String applicationName,
-//			@PathVariable String userName, @PathVariable String bankName){
-//		System.out.println("hello");
-//		return  licenseService.findByApplicationNameAndUserAndBank(applicationName, bankName, userName);
-//	}
+	@GetMapping("/licenses/licenseByApplicationNameAndUserAndBank/{applicationName}/{userName}/(bankName}")
+	public List<License> getlicenseByApplicationNameAndUserAndBank(@PathVariable String applicationName,
+			@PathVariable String userName, @PathVariable String bankName){
+		System.out.println("hello");
+		return  licenseService.findByApplicationNameAndUserAndBank(applicationName, userName, bankName );
+	}
 	
 	@GetMapping("/licenses/expiredLicenses")
 	public List<License> getExpiredLicenses(){
