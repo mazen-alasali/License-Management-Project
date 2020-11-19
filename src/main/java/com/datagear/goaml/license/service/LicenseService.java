@@ -1,9 +1,12 @@
 package com.datagear.goaml.license.service;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import com.datagear.goaml.license.exception.HandledException;
@@ -24,6 +27,9 @@ public class LicenseService {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private LicenseService licenseService;
 	
 	
 	
@@ -78,7 +84,36 @@ public List<License> findByCreatedUser(String createdUser) {
 		return licenses;
 		
 	}
-
+	
+//	public List<License> findByApplicationNameAndUserIdAndBankId(String applicationName,Long userId, Long bankId){
+//		return licenseRepository.findByApplicationNameAndUserIdAndBankId(applicationName, userId, bankId);
+//	}
+//
+//	public List<License> findByApplicationNameAndUserAndBank(String applicationName,String  bankName, String userName){
+//		Long bankId=bankService.findByName(bankName).getId();
+//		long userId=userService.findByUserName(userName).getId();
+//		return licenseService.findByApplicationNameAndUserAndBank(applicationName, bankName, userName);
+//	}
+//	@Query(value = "SELECT licenseDB.license.*\n" + 
+//			"  From licenseDB.license,licenseDB.user,licenseDB.bank \n" + 
+//			"  where licenseDB.license.application_name = ?1 \n" + 
+//			"  and licenseDB.license.user.id = ?2 \n" + 
+//			"  and  licenseDB.license.bank.id = ?3" )
+//	public List<License> findByApplicationNameAndUserIdAndBankId(String applicationName,Long userId, Long bankId){
+//		List<License> licenses= licenseRepository.findByApplicationNameAndUserIdAndBankId(applicationName, userId, bankId);
+//		return licenses;
+//	}
+	public List<License> findExpiredLicenses(){
+		Date currentDate = new Date(new java.util.Date().getTime());
+		return licenseRepository.findByExpirationDateBefore(currentDate);
+	}
+		
+	public List<License> findNotExpiredLicenses(){
+		Date currentDate = new Date(new java.util.Date().getTime());
+		return licenseRepository.findByExpirationDateAfter(currentDate);
+	}
+	
+	
 	public License save(License license, Long userId, String bankName) {
 		User user = userService.findById(userId);
 		Bank bank = bankService.findByName(bankName);

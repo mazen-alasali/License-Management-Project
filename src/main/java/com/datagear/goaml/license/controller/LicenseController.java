@@ -65,6 +65,23 @@ private static final Logger log = LoggerFactory.getLogger(LicenseController.clas
 		return  licenseService.findByCreatedUser(createdUser);
 	}
 	
+//	@GetMapping("/licenses/licenseByApplicationNameAndUserAndBank/{applicationName}/{userName}/(bankName}")
+//	public List<License> getlicenseByApplicationNameAndUserAndBank(@PathVariable String applicationName,
+//			@PathVariable String userName, @PathVariable String bankName){
+//		System.out.println("hello");
+//		return  licenseService.findByApplicationNameAndUserAndBank(applicationName, bankName, userName);
+//	}
+	
+	@GetMapping("/licenses/expiredLicenses")
+	public List<License> getExpiredLicenses(){
+		return  licenseService.findExpiredLicenses();
+	}
+	
+	@GetMapping("/licenses/notExpiredLicenses")
+	public List<License> getNotExpiredLicenses(){
+		return  licenseService.findNotExpiredLicenses();
+	}
+	
 	@PostMapping("/licenses/{userId}/{bankName}")
 	public License addLicense(@RequestBody License license, @PathVariable Long userId,@PathVariable String bankName ) {
 		log.info(license.toString());
