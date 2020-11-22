@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.datagear.goaml.license.model.Bank;
-import com.datagear.goaml.license.model.License;
 import com.datagear.goaml.license.service.BankService;
 
 @RestController

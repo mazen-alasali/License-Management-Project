@@ -2,11 +2,9 @@ package com.datagear.goaml.license.service;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import com.datagear.goaml.license.exception.HandledException;
@@ -26,12 +24,7 @@ public class LicenseService {
 	private BankService bankService;
 	
 	@Autowired
-	private UserService userService;
-	
-	@Autowired
-	private LicenseService licenseService;
-	
-	
+	private UserService userService;	
 	
 	public long count() {
 		
@@ -66,31 +59,21 @@ public class LicenseService {
 	}
 	
 public List<License> findByBankName(String bankName) {
-		
-		Bank bank = bankService.findByName(bankName);
-		List<License> licenses = bank.getLicense();
-		return licenses;	
+		return licenseRepository.findByBankName(bankName);
 	}
 
 public List<License> findByCreatedUser(String createdUser) {
-	
-	User user = userService.findByUserName(createdUser);
-	List <License> licenses = user.getLicenses();
-	return licenses;	
+	return licenseRepository.findByUserUserName(createdUser);	
 }
 	
 	public List<License> findByApplicationName(String applicationName){
 		List<License> licenses= licenseRepository.findByApplicationName(applicationName);
-		return licenses;
-		
+		return licenses;		
 	}
 	
-	public List<License> findByApplicationNameAndUserAndBank(String applicationName, String userName, String  bankName){
-	long bankId=bankService.findByName(bankName).getId();
-	System.out.println("Bank Id:"+ bankId);
-	long userId=userService.findByUserName(userName).getId();
-	System.out.println("User Id:"+ userId);
-	return licenseRepository.findByApplicationNameAndUserIdAndBankId(applicationName, userId, bankId);
+	public List<License> findByByApplicationNameAndUserAndBank(String applicationName,
+			String userName, String bankName){
+		return licenseRepository.findByApplicationNameAndUserUserNameAndBankName(applicationName, userName, bankName);
 	}
 	
 	public List<License> findExpiredLicenses(){
@@ -130,24 +113,5 @@ public List<License> findByCreatedUser(String createdUser) {
 		licenseRepository.delete(license);
 		
 	}	
-	
-}
 
-//public List<License> findByApplicationNameAndUserIdAndBankId(String applicationName,Long userId, Long bankId){
-//return licenseRepository.findByApplicationNameAndUserIdAndBankId(applicationName, userId, bankId);
-//}
-//
-//public List<License> findByApplicationNameAndUserAndBank(String applicationName,String  bankName, String userName){
-//Long bankId=bankService.findByName(bankName).getId();
-//long userId=userService.findByUserName(userName).getId();
-//return licenseService.findByApplicationNameAndUserAndBank(applicationName, bankName, userName);
-//}
-//@Query(value = "SELECT licenseDB.license.*\n" + 
-//	"  From licenseDB.license,licenseDB.user,licenseDB.bank \n" + 
-//	"  where licenseDB.license.application_name = ?1 \n" + 
-//	"  and licenseDB.license.user.id = ?2 \n" + 
-//	"  and  licenseDB.license.bank.id = ?3" )
-//public List<License> findByApplicationNameAndUserIdAndBankId(String applicationName,Long userId, Long bankId){
-//List<License> licenses= licenseRepository.findByApplicationNameAndUserIdAndBankId(applicationName, userId, bankId);
-//return licenses;
-//}
+}
