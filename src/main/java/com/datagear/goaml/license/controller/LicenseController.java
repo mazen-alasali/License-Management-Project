@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.datagear.goaml.license.model.License;
-import com.datagear.goaml.license.model.User;
 import com.datagear.goaml.license.service.LicenseService;
 
 
@@ -62,12 +61,13 @@ public class LicenseController {
 		return  licenseService.findByCreatedUser(createdUser);
 	}
 	
-//	@GetMapping("/licenses/licenseByApplicationNameAndUserAndBank/{applicationName}/{userName}/(bankName}")
-//	public List<License> getlicenseByApplicationNameAndUserAndBank(@PathVariable String applicationName,
-//			@PathVariable String userName, @PathVariable String bankName){
-//		System.out.println("hello");
-//		return  licenseService.findByApplicationNameAndUserAndBank(applicationName, bankName, userName);
-//	}
+	
+	@GetMapping("/licenses/licenseByApplicationNameAndUserAndBank/{applicationName}/{userName}/{bankName}")
+	public List<License> getlicenseByApplicationNameAndUserAndBank(@PathVariable String applicationName,
+			@PathVariable String userName, @PathVariable String bankName){
+		System.out.println("hello, I am in License Controller");
+		return  licenseService.findByByApplicationNameAndUserAndBank(applicationName, userName, bankName);
+	}
 	
 	@GetMapping("/licenses/expiredLicenses")
 	public List<License> getExpiredLicenses(){
@@ -93,11 +93,7 @@ public class LicenseController {
 	
 	@DeleteMapping("/licenses/{id}")
 	public void deleteLicense(@PathVariable Long id) {
-		//ResponseEntity
 		licenseService.deleteById(id);
 	}
-	
-	
-	
 	
 }
